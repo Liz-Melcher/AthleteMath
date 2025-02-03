@@ -38,6 +38,14 @@
                     <label class="form-label">Number of Rounds:</label>
                     <input type="number" class="form-control" id="roundsLadder">
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Ending laps:</label>
+                    <input type="number" class="form-control" id="endingLapsLadder">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Goal total laps:</label>
+                    <input type="number" class="form-control" id="goalTotalLapsLadder">
+                </div>
                 <button class="btn btn-primary w-100" onclick="calculateLadderLaps()">Calculate Total Laps</button>
                 <h3 class="text-center mt-3">Total Laps: <span id="totalLapsLadder">0</span></h3>
                 <ul id="roundBreakdownLadder" class="list-group mt-3"></ul>
@@ -70,26 +78,131 @@
     
     <script>
         function calculateLadderLaps() {
-            let start = parseInt(document.getElementById('startLapsLadder').value) || 0;
-            let change = parseInt(document.getElementById('changeLapsLadder').value) || 0;
-            let rest = parseInt(document.getElementById('restLapsLadder').value) || 0;
-            let rounds = parseInt(document.getElementById('roundsLadder').value) || 0;
-            let total = 0;
-            let breakdown = document.getElementById('roundBreakdownLadder');
-            breakdown.innerHTML = '';
-            
-            for (let i = 0; i < rounds; i++) {
-                let runLaps = start + (change * i);
-                let roundText = `Round ${i + 1}: ${runLaps} run, ${rest} rest`;
-                let listItem = document.createElement('li');
-                listItem.className = "list-group-item";
-                listItem.textContent = roundText;
-                breakdown.appendChild(listItem);
-                total += runLaps + rest;
-            }
-            
-            document.getElementById('totalLapsLadder').textContent = total;
+    let start = parseInt(document.getElementById('startLapsLadder').value) || 0;
+    let change = parseInt(document.getElementById('changeLapsLadder').value) || 0;
+    let rest = parseInt(document.getElementById('restLapsLadder').value) || 0;
+    let rounds = parseInt(document.getElementById('roundsLadder').value) || 0;
+    let endingLaps = document.getElementById('endingLapsLadder').value;
+    endingLaps = endingLaps ? parseInt(endingLaps) : null;
+    let goalTotalLaps = document.getElementById('goalTotalLapsLadder').value;
+    goalTotalLaps = goalTotalLaps ? parseInt(goalTotalLaps) : null;
+
+    let total = 0;
+    let breakdown = document.getElementById('roundBreakdownLadder');
+    breakdown.innerHTML = '';
+
+    let i = 0;
+    let runLaps = start;
+
+    // If rounds are defined, use rounds-based calculation
+    if (rounds) {
+        for (i = 0; i < rounds; i++) {
+            runLaps = start + (change * i);
+            let roundText = `Round ${i + 1}: ${runLaps} run, ${rest} rest`;
+            let listItem = document.createElement('li');
+            listItem.className = "list-group-item";
+            listItem.textContent = roundText;
+            breakdown.appendChild(listItem);
+            total += runLaps + rest;
         }
+    } 
+    // If ending laps is defined, go until reaching ending laps
+    else if (endingLaps !== null) {
+        i = 1;
+        while ((change > 0 && runLaps <= endingLaps) || (change < 0 && runLaps >= endingLaps)) {
+            let roundText = `Round ${i}: ${runLaps} run, ${rest} rest`;
+            let listItem = document.createElement('li');
+            listItem.className = "list-group-item";
+            listItem.textContent = roundText;
+            breakdown.appendChild(listItem);
+            total += runLaps + rest;
+
+            if (runLaps === endingLaps) break;
+
+            runLaps += change;
+            i++;
+
+            if ((change > 0 && runLaps > endingLaps) || (change < 0 && runLaps < endingLaps)) {
+                break;
+            }
+        }
+    }
+    // If goal total laps is defined, go until total laps reach the goal
+    else if (goalTotalLaps !== null) {
+        i = 1;
+        while (total < goalTotalLaps) {
+            let roundText = `Round ${i}: ${runLaps} run, ${rest} rest`;
+            let listItem = document.createElement('li');
+            listItem.className = "list-group-item";
+            listItem.textContent = roundText;
+            breakdown.appendChild(listItem);
+            total += runLaps + rest;
+
+            if (total >= goalTotalLaps) break;
+
+            runLaps += change;
+            i++;
+        }
+    }
+
+    document.getElementById('totalLapsLadder').textContent = total;
+}
+
+
+
+//         function calculateLadderLaps() {
+//     let start = parseInt(document.getElementById('startLapsLadder').value) || 0;
+//     let change = parseInt(document.getElementById('changeLapsLadder').value) || 0;
+//     let rest = parseInt(document.getElementById('restLapsLadder').value) || 0;
+//     let rounds = parseInt(document.getElementById('roundsLadder').value) || 0;
+//     let endingLaps = document.getElementById('endingLapsLadder').value;
+//     endingLaps = endingLaps ? parseInt(endingLaps) : null; // Handle empty input properly
+
+
+//     let total = 0;
+//     let breakdown = document.getElementById('roundBreakdownLadder');
+//     breakdown.innerHTML = '';
+
+//     let i = 0;
+//     let runLaps = start;
+
+//     // If rounds are defined, use that method
+//     if (rounds) {
+//         for (i = 0; i < rounds; i++) {
+//             runLaps = start + (change * i);
+//             let roundText = `Round ${i + 1}: ${runLaps} run, ${rest} rest`;
+//             let listItem = document.createElement('li');
+//             listItem.className = "list-group-item";
+//             listItem.textContent = roundText;
+//             breakdown.appendChild(listItem);
+//             total += runLaps + rest;
+//         }
+//     } 
+//     // Otherwise, calculate until reaching the ending laps
+//     else if (endingLaps !== null) {
+//         i = 1;
+//         while ((change > 0 && runLaps <= endingLaps)|| (change < 0 && runLaps >= endingLaps))  {
+//             let roundText = `Round ${i + 1}: ${runLaps} run, ${rest} rest`;
+//             let listItem = document.createElement('li');
+//             listItem.className = "list-group-item";
+//             listItem.textContent = roundText;
+//             breakdown.appendChild(listItem);
+//             total += runLaps + rest;
+
+//             // Update runLaps for next round
+//             runLaps += change;
+//             i++;
+
+//             // Break to avoid infinite loops if the change step would never reach the endingLaps
+//             if ((change > 0 && runLaps > endingLaps) || (change < 0 && runLaps < endingLaps)) {
+//                 break;
+//             }
+//         }
+//     }
+
+//     document.getElementById('totalLapsLadder').textContent = total;
+// }
+
         
         function calculatePyramidLaps() {
             let start = parseInt(document.getElementById('startLapsPyramid').value) || 0;
@@ -122,6 +235,42 @@
             // console.log(runLaps)
             document.getElementById('totalLapsPyramid').textContent = total;
         }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const roundsInput = document.getElementById("roundsLadder");
+    const endingLapsInput = document.getElementById("endingLapsLadder");
+    const goalTotalLapsInput = document.getElementById("goalTotalLapsLadder");
+
+    function toggleInputs(changedInput) {
+        if (changedInput.value) {
+            // Disable other two inputs
+            if (changedInput === roundsInput) {
+                endingLapsInput.disabled = true;
+                goalTotalLapsInput.disabled = true;
+            } else if (changedInput === endingLapsInput) {
+                roundsInput.disabled = true;
+                goalTotalLapsInput.disabled = true;
+            } else if (changedInput === goalTotalLapsInput) {
+                roundsInput.disabled = true;
+                endingLapsInput.disabled = true;
+            }
+        } else {
+            // Enable all if none are filled
+            if (!roundsInput.value && !endingLapsInput.value && !goalTotalLapsInput.value) {
+                roundsInput.disabled = false;
+                endingLapsInput.disabled = false;
+                goalTotalLapsInput.disabled = false;
+            }
+        }
+    }
+
+    roundsInput.addEventListener("input", () => toggleInputs(roundsInput));
+    endingLapsInput.addEventListener("input", () => toggleInputs(endingLapsInput));
+    goalTotalLapsInput.addEventListener("input", () => toggleInputs(goalTotalLapsInput));
+});
+
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
