@@ -1,6 +1,28 @@
 // Laps Calculator JavaScript
 
+console.log("Laps js is loaded")
+
+// Function to populate test data into the form fields
+function populateTestData(testData) {
+    document.querySelectorAll("[data-workout]").forEach(workout => {
+        const type = workout.dataset.workout;
+        if (testData[type]) {
+            Object.entries(testData[type]).forEach(([key, value]) => {
+                const input = workout.querySelector(`[data-input="${key}"]`);
+                if (input && value !== null) {
+                    input.value = value;
+                }
+            });
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    // Populate fields with test values from testData.js
+    if (typeof testData !== "undefined") {
+        populateTestData(testData);
+    }
+
     const calculateButtons = document.querySelectorAll('[data-action="calculate"]');
 
     calculateButtons.forEach(button => {
@@ -19,6 +41,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const calculateButtons = document.querySelectorAll('[data-action="calculate"]');
+
+//     calculateButtons.forEach(button => {
+//         button.addEventListener("click", function () {
+//             const workoutType = button.closest("[data-workout]").dataset.workout;
+//             const data = getFormData(button.closest("[data-workout]"));
+
+//             let result;
+//             if (workoutType === "ladder") {
+//                 result = calculateLadderLaps(data);
+//             } else if (workoutType === "ss") {
+//                 result = calculateStraightSets(data);
+//             }
+
+//             displayResults(button.closest("[data-workout]"), result);
+//         });
+//     });
+// });
 
 function getFormData(container) {
     const inputs = container.querySelectorAll("[data-input]");
