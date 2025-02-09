@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
             let result;
             if (workoutType === "ladder") {
                 result = calculateLadderLaps(data);
-            } else if (workoutType === "pyramid") {
-                result = calculatePyramidLaps(data);
+            } else if (workoutType === "ss") {
+                result = calculateStraightSets(data);
             }
 
             displayResults(button.closest("[data-workout]"), result);
@@ -69,109 +69,47 @@ function calculateLadderLaps({ startLaps, changeLaps, restLaps, rounds, endingLa
     return { total, breakdown };
 }
 
-function calculatePyramidLaps({ startLaps, changeLaps, restLaps, peakLaps, goalTotalLaps }) {
-    const breakdown = [];
-    let start = parseInt(startLaps) || 0;
-    let change = parseInt(changeLaps) || 0;
+function calculateStraightSets({ startLaps, restLaps, rounds, goalTotalLaps })  {
+    let laps = parseInt(startLaps) || 0;
     let rest = parseInt(restLaps) || 0;
+    let total = 0;
+    let roundsNum = parseInt(rounds) || 0;
     let goal = goalTotalLaps ? parseInt(goalTotalLaps) : null;
 
-    let total = 0;
-    let runLaps = start;
-    let roundCount = 1;
-    let ascending = true;
+    const breakdown = [];
+    let i = 0;
 
-    // Ascending and descending calculation
-    while (goal === null || total < goal) {
-        if (runLaps > 0) {
-            breakdown.push(`Round ${roundCount}: ${runLaps} run, ${rest} rest`);
-            total += runLaps + rest;
-            roundCount++;
+    if (roundsNum) {
+        for (i = 0; i < roundsNum; i++) {
+            breakdown.push(`Round ${i + 1}: ${laps} run, ${rest} rest`);
+            total += laps + rest;
         }
-
-        // Switch to descending if we've reached peak or exceeded the goal
-        if (ascending && (goal && total + runLaps + change > goal)) {
-            ascending = false;
-            runLaps -= change;  // Start descending immediately
+    } else if (goal !== null) {
+        while (total < goal) {
+            breakdown.push(`Round ${i + 1}: ${laps} run, ${rest} rest`);
+            total += laps + rest;
+            if (total >= goal) break;
+            i++;
         }
-
-        // Update run laps for next round
-        runLaps = ascending ? runLaps + change : runLaps - change;
-
-        // Handle rounding errors or overshooting
-        if (runLaps <= 0) break;
-    }
-
-    // Handle remaining laps with base rounds if necessary
-    while (total < goal) {
-        breakdown.push(`Extra Round ${roundCount}: ${start} run, ${rest} rest`);
-        total += start + rest;
-        roundCount++;
     }
 
     return { total, breakdown };
 }
 
-
-
-
-
-
-// function calculatePyramidLaps({ startLaps, changeLaps, restLaps, peakLaps, rounds, goalTotalLaps }) {
-//     let start = parseInt(startLaps) || 0;
-//     let change = parseInt(changeLaps) || 0;
-//     let rest = parseInt(restLaps) || 0;
-//     let peak = parseInt(peakLaps) || 0;
-//     let total = 0;
-//     let roundsNum = parseInt(rounds) || 0;
-//     let goal = goalTotalLaps ? parseInt(goalTotalLaps) : null;
-
-//     const breakdown = [];
-//     let runLaps = start;
-//     let i = 0;
-
-//     // Ascending phase
-//     while (runLaps < peak) {
-//         breakdown.push(`Round ${i + 1}: ${runLaps} run, ${rest} rest`);
-//         total += runLaps + rest;
-//         runLaps += change;
-//         i++;
-//     }
-
-//     // Peak round
-//     breakdown.push(`Round ${i + 1}: ${peak} run, ${rest} rest`);
-//     total += peak + rest;
-//     i++;
-
-//     // Descending phase
-//     runLaps = peak - change;
-//     while (runLaps >= start) {
-//         breakdown.push(`Round ${i + 1}: ${runLaps} run, ${rest} rest`);
-//         total += runLaps + rest;
-//         runLaps -= change;
-//         i++;
-//     }
-
-//     // Adjust for goal if provided
-//     if (goal !== null && total < goal) {
-//         while (total < goal) {
-//             breakdown.push(`Extra Round ${i + 1}: ${start} run, ${rest} rest`);
-//             total += start + rest;
-//             i++;
-//         }
-//     }
-
-//     return { total, breakdown };
-// }
-
 function displayResults(container, { total, breakdown }) {
     const totalEl = container.querySelector('[data-output="totalLaps"]');
     const breakdownEl = container.querySelector('[data-output="roundBreakdown"]');
+    const headerEl = container.querySelector('[data-output="workoutHeader"]');
 
     if (totalEl && breakdownEl) {
-        totalEl.textContent = total;
+        if (headerEl) {
+            headerEl.textContent = "Workout Results";
+        }
+
+        totalEl.textContent = `Total Laps: ${total}`;
+
         breakdownEl.innerHTML = "";
-        breakdown.forEach(round => {
+        breakdown.forEach((round) => {
             const li = document.createElement("li");
             li.className = "list-group-item";
             li.textContent = round;

@@ -9,87 +9,62 @@
     <script src="index.js"></script>
 </head>
 <body class="container py-4">
-    <div class="card shadow-sm p-4">
-        <h2 class="text-center mb-3">Laps Calculator</h2>
+    <h2 class="text-center mb-4">Laps Calculator</h2>
 
-        <ul class="nav nav-tabs" id="lapTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#ladder" type="button" role="tab">Ladder</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pyramid" type="button" role="tab">Pyramid</button>
-            </li>
-        </ul>
-
-        <div class="tab-content mt-3">
-            <!-- Ladder Workout -->
-            <div class="tab-pane fade show active" id="ladder" role="tabpanel" data-workout="ladder">
-                <div class="mb-2">
-                    <label class="form-label">Start Laps:</label>
-                    <input type="number" class="form-control" data-input="startLaps">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Increase/Decrease Laps per Round:</label>
-                    <input type="number" class="form-control" data-input="changeLaps">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Rest Laps per Round:</label>
-                    <input type="number" class="form-control" data-input="restLaps">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Number of Rounds:</label>
-                    <input type="number" class="form-control" data-input="rounds">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Ending Laps:</label>
-                    <input type="number" class="form-control" data-input="endingLaps">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Goal Total Laps:</label>
-                    <input type="number" class="form-control" data-input="goalTotalLaps">
-                </div>
-                <button class="btn btn-primary w-100" data-action="calculate">Calculate Total Laps</button>
-                <h3 class="text-center mt-3">Total Laps: <span data-output="totalLaps">0</span></h3>
-                <ul class="list-group mt-3" data-output="roundBreakdown"></ul>
-            </div>
-
-            <!-- Pyramid Workout -->
-            <div class="tab-pane fade" id="pyramid" role="tabpanel" data-workout="pyramid">
-                <div class="mb-2">
-                    <label class="form-label">Start Laps:</label>
-                    <input type="number" class="form-control" data-input="startLaps">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Increase/Decrease Laps per Round:</label>
-                    <input type="number" class="form-control" data-input="changeLaps">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Rest Laps per Round:</label>
-                    <input type="number" class="form-control" data-input="restLaps">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Peak Laps:</label>
-                    <input type="number" class="form-control" data-input="peakLaps">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Number of Rounds:</label>
-                    <input type="number" class="form-control" data-input="rounds">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Goal Total Laps:</label>
-                    <input type="number" class="form-control" data-input="goalTotalLaps">
-                </div>
-                <button class="btn btn-primary w-100" data-action="calculate">Calculate Total Laps</button>
-                <h3 class="text-center mt-3">Total Laps: <span data-output="totalLaps">0</span></h3>
-                <ul class="list-group mt-3" data-output="roundBreakdown"></ul>
-            </div>
-
-
-
-
-
-            
+    <!-- Ladder Workout Card -->
+    <div class="card shadow-sm p-4 mb-4" data-workout="ladder">
+        <h3 class="card-title text-center">Ladder Workout</h3>
+        <div class="mb-2">
+            <label class="form-label">Start Laps:</label>
+            <input type="number" class="form-control" data-input="startLaps">
         </div>
+        <div class="mb-2">
+            <label class="form-label">Increase/Decrease Laps per Round:</label>
+            <input type="number" class="form-control" data-input="changeLaps">
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Rest Laps per Round:</label>
+            <input type="number" class="form-control" data-input="restLaps">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Number of Rounds:</label>
+            <input type="number" class="form-control" data-input="rounds">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ending Laps:</label>
+            <input type="number" class="form-control" data-input="endingLaps">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Goal Total Laps:</label>
+            <input type="number" class="form-control" data-input="goalTotalLaps">
+        </div>
+        <button class="btn btn-primary w-100" data-action="calculate">Calculate Total Laps</button>
+        <h4 class="text-center mt-3">Total Laps: <span data-output="totalLaps">0</span></h4>
+        <ul class="list-group mt-3" data-output="roundBreakdown"></ul>
+    </div>
+
+    <!-- Straight Sets Workout Card -->
+    <div class="card shadow-sm p-4 mb-4" data-workout="ss">
+        <h3 class="card-title text-center">Straight Sets Workout</h3>
+        <div class="mb-2">
+            <label class="form-label">Laps:</label>
+            <input type="number" class="form-control" data-input="startLaps">
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Rest Laps per Round:</label>
+            <input type="number" class="form-control" data-input="restLaps">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Number of Rounds:</label>
+            <input type="number" class="form-control" data-input="rounds">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Goal Total Laps:</label>
+            <input type="number" class="form-control" data-input="goalTotalLaps">
+        </div>
+        <button class="btn btn-primary w-100" data-action="calculate">Calculate Total Laps</button>
+        <h4 class="text-center mt-3">Total Laps: <span data-output="totalLaps">0</span></h4>
+        <ul class="list-group mt-3" data-output="roundBreakdown"></ul>
     </div>
 </body>
 </html>
