@@ -1,78 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"> 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-    <script src="index.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout Styles</title>
+  <!-- Bootstrap CSS CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-9ndCyUa8CtvzjV2VulKfC0DqW3OZnW5VcDpl+3N2V9fzO8C5sp5RW5pAoVvvEJTF"
+    crossorigin="anonymous"
+  />
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-HoA4m9rSLa8qnLqNwUPw+Oe3hSgY1LJv2KPfdo/U7hOx5PKN6A8ylCwlCWX2tx+x"
+  crossorigin="anonymous"></script>
+
+  <script src="index.js"></script>
 </head>
 <body>
-    <header>Athlete Math</header>
-    <!-- would it be better to start with units of measurement, and then select workout type-->
-    <main>
+  <!-- Horizontal Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Home</a>
+      <ul class="navbar-nav flex-row">
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="pyramid.html">Pyramid</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="reverse-pyramid.html">Reverse Pyramid</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="ladder.html">Ladder</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="descending-ladder.html">Descending Ladder</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="straight-sets.html">Straight Sets</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-      Laps
-      Ladder
-      Start at ___ laps 
-      Increase by ___ laps per round 
-      Rest laps per round: 
-      Total number of rounds:
-      Total laps will be: 
+  <!-- Main content -->
+  <main class="container mt-5">
+    <h1>Welcome to Workout Styles</h1>
+    <p>Select a workout style from the menu above to learn more.</p>
+  </main>
 
-      Pyramid
-      Start at ___ laps
-      increase by __ laps per round
-      rest laps per round: 
-      Top of the pyramid: 
-      Total laps will be
-
-      Descending Ladder
-      Start at ___ laps 
-      Decrease by ___ laps per round 
-      Rest laps per round: 
-      Total number of rounds:
-      Total laps will be: 
-
-      Straight sets: 
-      Laps per working set: 
-      Laps per resting set: 
-      rest laps per set: 
-      Total sets: 
-      Total laps will be: 
-  
-
-      <p>Start at: </p>
-      <p>Units of measurement:  </p>
-      <p>Add rest units: </p>
-      <p>Increase by: </p>
-      <p>Total number of rounds: </p>
-
-      <p>Total work will be: </p>
-
-        <div class="card" style="width: 18rem;"> <!--start of card-->
-            <div class="card-header"><!--start of card header-->
-              Ladder Workouts
-            </div><!--end of header-->
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <div class="btn-group" role="group" aria-label="Working Units">
-                  <button type="button" class="btn btn-outline-primary" onclick="selectUnit(this)">Reps</button>
-                  <button type="button" class="btn btn-outline-primary" onclick="selectUnit(this)">Laps</button>
-                  <button type="button" class="btn btn-outline-primary" onclick="selectUnit(this)">Distance</button>
-              </div>
-              
-              
-              
-              </li> <!--end list for work units -->
-              <li class="list-group-item">Add rest units: </li>
-              <li class="list-group-item">Total number of rounds: </li>
-              <li class="list-group-item">Total: </li>
-            </ul>
-          </div>
-        
-    </main>
-    
+ 
 </body>
 </html>
