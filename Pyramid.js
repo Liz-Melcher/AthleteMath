@@ -70,22 +70,26 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const totalCount = steps.reduce((a, b) => a + b, 0);
+    const totalCount = Math.round(steps.reduce((a, b) => a + b, 0) * 100) / 100;
     const numRestPeriods = steps.length;
-    const totalRest = calculateTotalRest(restInput, numRestPeriods);
-    const totalOverall = totalCount + totalRest;
+    const totalRest = Math.round(calculateTotalRest(restInput, numRestPeriods) * 100) / 100;
+    const totalOverall = Math.round((totalCount + totalRest) * 100) / 100;
 
     output.innerHTML = `
       <div class="card mx-auto mt-4 shadow" style="max-width: 600px;">
-        <div class="card-body text-center">
+        <div class="card-body text-center" id="workoutCard">
           <h4 class="card-title">Workout Plan (${displayUnit})</h4>
           <p class="card-text mb-1">Mode: <strong>${mode === 'topStep' ? 'Top Step' : 'Goal Count'}</strong></p>
           <p class="card-text mb-1">Working ${displayUnit}: <strong>${totalCount}</strong></p>
           <p class="card-text mb-1">Rest ${displayUnit}: <strong>${totalRest}</strong></p>
           <p class="card-text mb-3">Total ${displayUnit}: <strong>${totalOverall}</strong></p>
           <div class="d-flex flex-wrap justify-content-center gap-2">
-            ${steps.map(s => `<span class="badge bg-primary fs-6">${s} ${displayUnit}</span>`).join('')}
+            ${steps.map(s => {
+              const rounded = Math.round(s * 100) / 100;
+              return `<span class="badge bg-primary fs-6">${rounded} ${displayUnit}</span>`;
+            }).join('')}
           </div>
+          <button onclick="window.print()" class="btn btn-outline-secondary mt-4">Print / Export as PDF</button>
         </div>
       </div>
     `;
