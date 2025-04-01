@@ -4,11 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pyramid Workout</title>
-  <!-- Bootstrap CSS (without integrity check) -->
+
+  <!-- Bootstrap CSS -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     rel="stylesheet"
   />
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+
 </head>
 <body>
   <!-- Navbar -->
@@ -35,62 +38,85 @@
     </div>
   </nav>
 
-  <!-- Form Content -->
+  <!-- Main Content -->
   <div class="container my-5">
     <h2 class="mb-4 text-center">Pyramid Workout Setup</h2>
     <form id="pyramidForm">
+      <!-- Measurement Type -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <label for="unitSelect" class="form-label">Measurement Type</label>
+          <select class="form-select form-select-lg" id="unitSelect" required>
+            <option value="">Select Unit</option>
+            <option value="reps">Reps</option>
+            <option value="laps">Laps</option>
+            <option value="distance">Distance</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Base Step + Increase -->
       <div class="row mb-3">
         <div class="col-12 col-md-6 mb-3 mb-md-0">
-          <label for="baseStep" class="form-label">Base Step</label>
-          <input type="number" class="form-control" id="baseStep" required />
+          <label for="baseStep" class="form-label">First Step</label>
+          <input type="text" class="form-control" id="baseStep" placeholder="1 or 2" required />
         </div>
         <div class="col-12 col-md-6">
           <label for="increaseStep" class="form-label">Increase per Step</label>
-          <input type="number" class="form-control" id="increaseStep" required />
+          <input type="text" class="form-control" id="increaseStep" placeholder="1 or 2" required />
         </div>
       </div>
 
+      <!-- Rest + Highest Step -->
       <div class="row mb-3">
         <div class="col-12 col-md-6 mb-3 mb-md-0">
           <label for="restPerStep" class="form-label">Rest per Step</label>
-          <input type="text" class="form-control" id="restPerStep" placeholder="e.g., 0, 1 lap, 100m" />
+          <input type="text" class="form-control" id="restPerStep" placeholder="optional"/>
         </div>
         <div class="col-12 col-md-6">
           <label for="highestStep" class="form-label">Highest Step</label>
-          <input type="number" class="form-control" id="highestStep" />
+          <input type="text" class="form-control" id="highestStep" placeholder="e.g. 5" />
         </div>
       </div>
 
-      <div class="row mb-3">
-        <div class="col-12 col-md-6 mb-3 mb-md-0">
-          <label for="goalCount" class="form-label">Goal Count</label>
-          <input type="number" class="form-control" id="goalCount" />
-        </div>
+      <!-- Goal Count -->
+      <div class="row mb-4">
         <div class="col-12 col-md-6">
-            <label for="unitSelect" class="form-label">Measurement Type</label>
-            <select class="form-select form-select-lg" id="unitSelect" required>
-              <option value="">Select Unit</option>
-              <option value="reps">Reps</option>
-              <option value="laps">Laps</option>
-              <option value="time">Time</option>
-              <option value="distance">Distance</option>
-            </select>
-          </div>
-          
+          <label for="goalCount" class="form-label">Goal Count</label>
+          <input type="text" class="form-control" id="goalCount" placeholder="e.g. 25" />
+        </div>
       </div>
 
+      <!-- Submit Button -->
       <div class="text-center">
         <button type="submit" class="btn btn-primary px-4">Generate Workout</button>
       </div>
     </form>
 
-    <!-- Output Display -->
+    <!-- Output -->
     <div id="workoutOutput" class="mt-5"></div>
   </div>
 
-  <!-- Bootstrap JS (no integrity) -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom Script -->
+
+  <!-- Pyramid Script -->
   <script src="pyramid.js"></script>
+
+  <!-- Inline Script: Dynamic Placeholder Changes -->
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const unitSelect = document.getElementById('unitSelect');
+      unitSelect.addEventListener('change', () => {
+        const isTime = unitSelect.value === 'time';
+
+        document.getElementById('baseStep').placeholder = isTime ? 'e.g. 00:30' : 'e.g. 1';
+        document.getElementById('increaseStep').placeholder = isTime ? 'e.g. 00:15' : 'e.g. 1';
+        document.getElementById('restPerStep').placeholder = isTime ? 'e.g. 00:30' : 'e.g. 1 lap';
+        document.getElementById('highestStep').placeholder = isTime ? 'e.g. 01:30' : 'e.g. 5';
+        document.getElementById('goalCount').placeholder = isTime ? 'e.g. 10:00' : 'e.g. 36';
+      });
+    });
+  </script> -->
 </body>
 </html>
