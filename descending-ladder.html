@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Descending Ladder Workout</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Home</a>
+      <ul class="navbar-nav flex-row">
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="pyramid.html">Pyramid</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="reverse-pyramid.html">Reverse Pyramid</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="ladder.html">Ladder</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="descending-ladder.html">Descending Ladder</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="straight-sets.html">Straight Sets</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <h2 class="mb-4 text-center">Descending Ladder Workout Setup</h2>
+    <form id="descendingLadderForm">
+      <!-- Measurement Type -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <label for="unitSelect" class="form-label">Measurement Type</label>
+          <select class="form-select form-select-lg" id="unitSelect" required>
+            <option value="">Select Unit</option>
+            <option value="reps">Reps</option>
+            <option value="laps">Laps</option>
+            <option value="distance">Distance</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Top Step + Decrement -->
+      <div class="row mb-3">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+          <label for="topStep" class="form-label">Top Step</label>
+          <input type="number" class="form-control" id="topStep" placeholder="e.g. 10" required />
+        </div>
+        <div class="col-12 col-md-6">
+          <label for="decrementStep" class="form-label">Decrement Interval</label>
+          <input type="number" class="form-control" id="decrementStep" placeholder="e.g. 1" required />
+        </div>
+      </div>
+
+      <!-- Rest per Round + Bottom Step -->
+      <div class="row mb-3">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+          <label for="restPerRound" class="form-label">Rest per Round</label>
+          <input type="text" class="form-control" id="restPerRound" placeholder="optional" />
+        </div>
+        <div class="col-12 col-md-6">
+          <label for="bottomStep" class="form-label">Bottom Step (optional)</label>
+          <input type="number" class="form-control" id="bottomStep" placeholder="e.g. 1" />
+        </div>
+      </div>
+
+      <!-- Goal Total -->
+      <div class="row mb-4">
+        <div class="col-12 col-md-6">
+          <label for="goalTotal" class="form-label">Goal Total (optional)</label>
+          <input type="number" class="form-control" id="goalTotal" placeholder="e.g. 30" />
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary px-4">Generate Workout</button>
+      </div>
+    </form>
+
+    <!-- Output -->
+    <div id="workoutOutput" class="mt-5"></div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Descending Ladder JS -->
+  <script src="descending-ladder.js"></script>
+</body>
+</html>
