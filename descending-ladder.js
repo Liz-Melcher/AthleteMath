@@ -10,20 +10,35 @@ function buildDescendingSteps(top, dec, bottom) {
   return steps;
 }
 
-function buildDescendingForGoal(goal, dec, bottom) {
-  let testTop = dec * 100; // Arbitrary high ceiling
-  while (testTop >= bottom) {
+function buildDescendingForGoal(goal, dec, bottom, restPerStep = 0) {
+  let bestMatch = null;
+  let bestTotal = Infinity;
+
+  for (let testTop = dec * 100; testTop >= bottom; testTop--) {
     const candidate = [];
-    let sum = 0;
+    let working = 0;
+
     for (let i = testTop; i >= bottom; i -= dec) {
       candidate.push(i);
-      sum += i;
+      working += i;
     }
-    if (sum === goal) return candidate;
-    testTop--;
+
+    const restTotal = restPerStep * candidate.length;
+    const overall = working + restTotal;
+
+    if (overall === goal) {
+      return candidate; // exact match
+    }
+
+    if (overall > goal && overall < bestTotal) {
+      bestMatch = candidate;
+      bestTotal = overall;
+    }
   }
-  return [];
+
+  return bestMatch || [];
 }
+
 
 function calculateTotalRest(restInput, numSteps) {
   const numericRest = parseFloat(restInput);
@@ -47,25 +62,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const goalInput = document.getElementById('goalTotal').value;
     const restInput = document.getElementById('restPerRound').value;
 
-    const top = parseFloat(topStepInput);
-    const dec = parseFloat(decrementInput);
-    const bottom = bottomStepInput ? parseFloat(bottomStepInput) : dec;
-    const goal = goalInput ? parseFloat(goalInput) : NaN;
+    const top = parseFloat(topStepInput.trim());
+    const dec = parseFloat(decrementInput.trim());
+    const bottom = bottomStepInput ? parseFloat(bottomStepInput.trim()) : dec;
+    const goal = goalInput ? parseFloat(goalInput.trim()) : NaN;
     const restPerStep = parseFloat(restInput) || 0;
 
     let steps = [];
     let mode = '';
+    let wasApproximate = false;
 
-    // ✅ Use goal mode if goal is provided
-    if (!isNaN(goal) && !isNaN(dec)) {
-      steps = buildDescendingForGoal(goal, dec, bottom);
+    // ✅ Goal-based path
+    if (goalInput && !isNaN(goal) && !isNaN(dec)) {
+      steps = buildDescendingForGoal(goal, dec, bottom, restPerStep);
       if (steps.length === 0) {
-        output.innerHTML = `<div class="alert alert-warning">No valid descending ladder found to reach exactly ${goal} ${displayUnit}.</div>`;
+        output.innerHTML = `<div class="alert alert-danger">No valid descending ladder found.</div>`;
         return;
       }
+      const actualTotal = steps.reduce((a, b) => a + b, 0);
+      wasApproximate = actualTotal !== goal;
       mode = 'goalCount';
 
-    // ✅ Fallback to top-step mode
+    // ✅ Top-step fallback
     } else if (!isNaN(top) && !isNaN(dec)) {
       steps = buildDescendingSteps(top, dec, bottom);
       mode = 'topStep';
@@ -85,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="card mx-auto mt-4 shadow" style="max-width: 600px;">
         <div class="card-body text-center" id="workoutCard">
           <h4 class="card-title">Workout Plan (${displayUnit})</h4>
-          <p class="card-text mb-1">Mode: <strong>${mode === 'topStep' ? 'Top Step' : 'Goal Count'}</strong></p>
+          <p class="card-text mb-1">Mode: <strong>${mode === 'topStep' ? 'Top Step' : 'Goal Count'}${wasApproximate ? ' (Closest Match)' : ''}</strong></p>
           <p class="card-text mb-1">Working ${displayUnit}: <strong>${totalCount}</strong></p>
           <p class="card-text mb-1">Rest ${displayUnit}: <strong>${totalRest}</strong></p>
           <p class="card-text mb-3">Total ${displayUnit}: <strong>${totalOverall}</strong></p>
