@@ -11,7 +11,7 @@ function buildDescendingSteps(top, dec, bottom) {
 }
 
 function buildDescendingForGoal(goal, dec, bottom) {
-  let testTop = dec * 100;
+  let testTop = dec * 100; // Arbitrary high ceiling
   while (testTop >= bottom) {
     const candidate = [];
     let sum = 0;
@@ -56,18 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let steps = [];
     let mode = '';
 
-    if (!isNaN(top) && !isNaN(dec)) {
-      steps = buildDescendingSteps(top, dec, bottom);
-      mode = 'topStep';
-    } else if (!isNaN(goal) && !isNaN(dec)) {
+    // ✅ Use goal mode if goal is provided
+    if (!isNaN(goal) && !isNaN(dec)) {
       steps = buildDescendingForGoal(goal, dec, bottom);
       if (steps.length === 0) {
         output.innerHTML = `<div class="alert alert-warning">No valid descending ladder found to reach exactly ${goal} ${displayUnit}.</div>`;
         return;
       }
       mode = 'goalCount';
+
+    // ✅ Fallback to top-step mode
+    } else if (!isNaN(top) && !isNaN(dec)) {
+      steps = buildDescendingSteps(top, dec, bottom);
+      mode = 'topStep';
+
+    // ❌ Invalid inputs
     } else {
-      output.innerHTML = `<div class="alert alert-danger">Please provide either: (top step + decrement) OR (goal + decrement).</div>`;
+      output.innerHTML = `<div class="alert alert-danger">Please provide either: (goal + decrement) OR (top step + decrement).</div>`;
       return;
     }
 
